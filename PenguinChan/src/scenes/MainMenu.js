@@ -4,91 +4,106 @@ export default class MainMenu extends Phaser.Scene {
 	}
 
 	preload () {
-		// Background.
-        this.load.image('backgroundMenu', './assets/images/menuBackground.jpg');
-
-        // Música.
-        this.load.audio('f3ale', './assets/audio/f3ale.mp3');
+        this.load.image('ball', './assets/ball16.png');
 	}
+
 	create() {
-        // Paramos el audio
-        this.sound.stopAll();
-        
-        // Música.
-        const music = this.sound.add('f3ale');
-        music.play();
-        this.sound.pauseOnBlur = true;
-
-        
-
         // Texto del Título con borde de color aleatorio
         let title = this.add.text(
             this.cameras.main.centerX,
-            this.cameras.main.centerY - 150,
-            'Introito Antiapotropaigro',
+            this.cameras.main.centerY - 100,
+            'Penguin-chan \nWars',
             {
-                fontFamily: 'arabic',
-                fontSize: 100,
+                fontFamily: 'Babelgam',
+                fontSize: 60,
 
-                color: '#dfa919',
-                stroke: '#453424',   
-                strokeThickness: 10
+                color: 'blue',
+                stroke: 'white',   
+                strokeThickness: 5
             }
         ).setOrigin(0.5, 0.5);
 
-		let title2 = this.add.text(
-            this.cameras.main.centerX,
-            this.cameras.main.centerY - 75,
-            '(o Cómo contactar con los dioses para propositos malignos\npor mandato de la Faraona Suprema)',
-            {
-                fontFamily: 'arabic',
-                fontSize: 25,
-                color: '#e3be5b'
-            }
-        ).setOrigin(0.5, 0.5);
-
-        const bg = this.make.image({ // Background.
-            key: 'backgroundMenu',
-        }).setPosition(this.cameras.main.centerX, this.cameras.main.centerY);
+        
 
         // Alineacion y profundidad del texto.
         title.setAlign('center').setDepth(1);
-		title2.setAlign('center').setDepth(1);
 
         // Botones
-        this.createButton('JUGAR',  this.cameras.main.centerX,  80 + this.cameras.main.centerY, 'white');
-        //this.createButton('2P Game', 50, 2, 'white');
+        this.playButton = this.add.text(
+            this.cameras.main.centerX,
+            this.cameras.main.centerY + 20,
+            '1P. Game',
+            {
+                fontFamily: 'Babelgam',
+                fontSize: 30,
+                color: 'white'
+            }
+
+        ).setOrigin(0.5, 0.5).setInteractive();
+
+        this.playButtonTwo = this.add.text(
+            this.cameras.main.centerX,
+            this.cameras.main.centerY + 60,
+            'VS. Game',
+            {
+                fontFamily: 'Babelgam',
+                fontSize: 30,
+                color: 'white'
+            }
+
+        ).setOrigin(0.5, 0.5).setInteractive();
+
+        // Bola selectora.
+        this.ball = this.add.image(
+            this.playButton.x - 80,
+            this.playButton.y,
+            'ball'
+        ).setOrigin(0.5);
+
+        // 0 -> playButton 
+        // 1 -> playButtonTwo.
+        this.selectedButton = 0; // podría hacerse tmb con booleanos o strings...
+
+        this.input.keyboard.on('keydown-S', () =>{
+            if(this.selectedButton === 0){
+                this.selectedButton = 1; // cambia de botón.
+                this.ball.setPosition(this.playButtonTwo.x - 80, this.playButtonTwo.y);
+            }
+        });
+
+        this.input.keyboard.on('keydown-W', () =>{
+            if(this.selectedButton === 1){
+                this.selectedButton = 0; // cambia de botón.
+                this.ball.setPosition(this.playButton.x - 80, this.playButton.y);
+            }
+        });
+
+        this.input.keyboard.on('keydown-SPACE', () =>{
+            if(this.selectedButton === 0){
+                this.scene.start("PenguinScene");
+            }
+            else if(this.selectedButton === 1){
+                this.scene.start("PenguinScene");
+            }
+        })
+
     }
 
-	createButton(text, x, y, textColor) {
+	/*createButton(text, x, y, textColor) {
         let button = this.add.text(
            x,
            y,
             text,
             {
-                fontFamily: 'arabic',
-                fontSize: 50,
+                fontFamily: 'Babelgam',
+                fontSize: 30,
 
                 color: textColor
             }
         ).setOrigin(0.5, 0.5);
 
         button.setInteractive();
-        button.on("pointerdown", () => { // Al hacer clic...
-            this.scene.start("GameSelectorMenu");
-        });
-
-        button.on('pointerover', () => // Al pasar el ratón por encima...
-        {
-            button.setTint(0xdfa919);
-            //button.fontSize = '70px';
-        });
-    
-        button.on('pointerout', () => // Al quitar el ratón de encima...
-        {
-            button.clearTint();
-            //button.fontSize = '50px';
-        });
-    }
+        
+    }*/
 
   }

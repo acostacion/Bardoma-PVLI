@@ -1,3 +1,6 @@
+import MainMenu from "./scenes/MainMenu.js";
+import PenguinScene from "./scenes/PenguinScene.js";
+
 let config = {
 	type: Phaser.AUTO,
 	parent: 'juego',
@@ -11,7 +14,7 @@ let config = {
 		height: 512,
 		zoom: 1
 	},
-	scene: [],
+	scene: [MainMenu, PenguinScene],
 	physics: { 
 		default: 'arcade', 
 		arcade: { 
