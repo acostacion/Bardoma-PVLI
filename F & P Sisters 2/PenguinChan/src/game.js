@@ -1,3 +1,7 @@
+import MainMenu from "./scenes/MainMenu.js";
+import Boot from "./scenes/Boot.js";
+import PlayScene from "./scenes/PlayScene.js";
+
 let config = {
 	type: Phaser.AUTO,
 	parent: 'juego',
@@ -11,7 +15,7 @@ let config = {
 		height: 512,
 		zoom: 1
 	},
-	scene: [],
+	scene: [Boot, MainMenu, PlayScene],
 	physics: { 
 		default: 'arcade', 
 		arcade: { 

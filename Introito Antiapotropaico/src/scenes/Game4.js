@@ -7,7 +7,6 @@ export default class Game4 extends Phaser.Scene {
         super({ key: 'Game4'});
     }
     
-
     init(data) {
         this.gameState = data.gameState; // Guarda gameState en la escena
     }
