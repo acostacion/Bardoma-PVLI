@@ -13,7 +13,7 @@ export default class Game1 extends Phaser.Scene {
     }
 
     preload () {
-        // Cargamos el Tilemap (JsSON)
+        // Cargamos el Tilemap (JSON)
         // -- mapa 1
 		this.load.tilemapTiledJSON('tilemap1', './assets/tilemap/map1.json');
         // -- mapa 2
@@ -21,26 +21,12 @@ export default class Game1 extends Phaser.Scene {
         // -- mapa 3
         this.load.tilemapTiledJSON('tilemap3', './assets/tilemap/map3.json');
 
-		// Cargamos la imagen que compone el Tileset (Imagen con los tiles usados por el tilemap)
-		this.load.image('patronesTilemap', './assets/tilemap/tileset_duat.png');
-
-		// Recurso para el personaje principal (imagen simple con un solo frame)
-		this.load.image('player', './assets/images/g1/playerG1.png');
-
-        // Recurso para el personaje principal (imagen simple con un solo frame)
-		this.load.image('box', './assets/images/g1/box.png');
-
-        // Recurso para el personaje principal (imagen simple con un solo frame)
-		this.load.image('organ', './assets/images/g1/organ.png');
-
-        // Recurso para el personaje principal (imagen simple con un solo frame)
-		this.load.image('goal', '../../assets/images/g1/goal.png');
-
-        // Música.
+        // Música
         this.load.audio('theme1', './assets/audio/m1c.mp3');
     }
     
     create () {
+        this.cameras.main.setBackgroundColor(0x181818);
         // si es la primera vez q se inicia...
         if(!this.gameState.hasStartedBefore[0]){
             this.gameState.hasStartedBefore[0] = true; // ala ya ha salio el tutorial.
@@ -53,76 +39,108 @@ export default class Game1 extends Phaser.Scene {
 
     createTanqiaPopUp(){
         this.isClickingOnUI = true; // inicialmente lo de Tanqia es UI (bloquea interacciones).
-        // Background del dialogo (LUEGO IMAGEN).
-        let dialogueBackground = this.make.image({
-            x: this.cameras.main.centerX, // x
-            y: this.cameras.main.centerY, // y
-            scale:{
-                x: 1.9, // anchura
-                y: 2.22, // altura
-            },
-            key: 'tanqiaBg',
-        });
-
-        let tanqia = this.add.image(
-            this.cameras.main.centerX, 
-            this.cameras.main.centerY + 175, 
-            'tanqia'
-        ).setScale(0.5, 0.32); // x, y, tag.
 
         let tanqiaText = this.add.text(
             this.cameras.main.centerX, 
-            this.cameras.main.centerY - 150, 
+            this.cameras.main.centerY - 100, 
             'Socar te ama. A ti y a cada uno de los futuros muertos. Te ama a ti, con tus órganos frescos, y me ama a mí, con mis órganos podridos. Esa piel fina que te recubre te contiene y tras la muerte Socar te contendrá como una piel transitoria en tu viaje por la Duat. Socar alimenta uno a uno cada corazón, cada estómago, cada intestino, cada mínima parte de aquel que llama a La puerta de caminos, inscribe tus peticiones y plegarias en los órganos de los finados de esta ciudad y hazlos llegar a lo más profundo del Mundo Subterráneo',
             {
                 fontSize: '20px',
                 color: '#ffffff',
                 align: 'center',
-                fontFamily: 'EagleLake',
+                fontFamily: 'yatra',
                 wordWrap: {width: 500}, // la puta polla: es lo de \n pero pro.
                 wordWrapUseAdvanced: true, // sirve para que no se coma palabras.
             }
         ).setOrigin(0.5); // danzhu lo tenia y funciona.
 
-        // Botón de aceptar.
-        let acceptButton = this.add.text(
+        let tanqia = this.add.image(
             this.cameras.main.centerX, 
-            this.cameras.main.centerY + 340, 
-            'Jugar',
-            {
-            fontSize: '50px',
-            fontFamily: 'arabic',
-            color: 'white',
-            align: 'center'
-        }).setOrigin(0.5).setInteractive();
+            this.cameras.main.centerY + 175, 
+            'Icon1'
+        ).setScale(1.5, 1.5).setInteractive(); // x, y, tag.
 
-        acceptButton.on('pointerover', () => // Al pasar el ratón por encima...
+        tanqia.on('pointerover', () => // Al pasar el ratón por encima...
         {
-            acceptButton.setTint(0xdfa919);
+            tanqia.setTint(0x8a9597);
         });
 
-        acceptButton.on('pointerout', () => // Al quitar el ratón de encima...
+        tanqia.on('pointerout', () => // Al quitar el ratón de encima...
         {
-            acceptButton.clearTint();
+            tanqia.clearTint();
         });
 
-        acceptButton.on('pointerdown', ()=>{
+        tanqia.on('pointerdown', ()=>{
             // Destruye todo y pone el juego a funcionarch.
-            dialogueBackground.destroy();
             tanqia.destroy();
             tanqiaText.destroy();
-            acceptButton.destroy();
+            this.showTutorial();
+        });
+    }
+
+    showTutorial(){
+        let tutoImage = this.make.image({
+            x: this.cameras.main.centerX, // x
+            y: this.cameras.main.centerY, // y
+            scale:{
+                x: 1, // anchura
+                y: 1.1, // altura
+            },
+            key: 'Tuto1',
+        });
+
+        let tuto1Text = this.add.text( // diapo 1 text.
+            this.cameras.main.width - 30, 
+            this.cameras.main.scrollY + 30, 
+            'X',
+            {
+                fontSize: '40px',
+                color: '#181818',
+                align: 'center',
+                fontFamily: 'yatra',
+            }
+        ).setOrigin(0.5).setInteractive();
+
+        tuto1Text.on('pointerdown', ()=>{
+            // Destruye todo y pone el juego a funcionarch.
+            tutoImage.destroy();
+            tuto1Text.destroy();
             this.startGame();
-        })
+        });
+
+        tuto1Text.on('pointerover', () => // Al pasar el ratón por encima...
+        {
+            tuto1Text.setColor('#0032c3');
+        });
+
+        tuto1Text.on('pointerout', () => // Al quitar el ratón de encima...
+        {
+            tuto1Text.setColor('#181818');
+        });
     }
 
     startGame(){
-        // Música.
-        const music = this.sound.add('theme1');
-        music.play();
+        /*// Música.
+        this.music = this.sound.add('theme1');
+        this.music.play();
         this.sound.pauseOnBlur = true;
 
-        this.cameras.main.setBounds(-100,-65,416,256).setZoom(window.screen.availWidth/1000);
+        // Botón de la música.
+        this.musicButton = this.add.image(this.cameras.main.centerX - 5, this.cameras.main.center-5, 'musicButton');
+        this.musicButton.on("pointerdown", () => { // PARAR Y REANUDAR MUSICA.
+            this.isClickingOnUI = true; 
+            if (this.music.isPlaying) {
+                this.music.pause();
+                this.musicButton.setTexture('muteButton');
+            } 
+            else {
+                this.music.resume();
+                this.musicButton.setTexture('musicButton');
+            }
+        }).setScale(0.1).setInteractive().setDepth(1000).setScrollFactor(0); // pq es UI*/
+
+        
+        this.cameras.main.setBounds(-65,-65,416,256).setZoom(window.screen.availWidth/1000);
         
         this.cursors = this.input.keyboard.createCursorKeys();
         
@@ -293,13 +311,20 @@ export default class Game1 extends Phaser.Scene {
         });
         
         // tiempo
-        this.timerText = this.add.text(20, 20, this.gameTime,
-            { fontFamily: 'arabic', fontSize: 15, color: 'White' }).setOrigin(0.5, 0.5);
+        this.timerText = this.add.text(
+            20, 
+            20, 
+            this.gameTime,
+            { 
+                fontFamily: 'yatra', 
+                fontSize: 15, 
+                color: 'White' 
+            }).setOrigin(0.5, 0.5);
             
             this.timerHUD();
             
             // boton
-            this.createButton('MAIN MENU',  this.cameras.main.centerX - 30, this.cameras.main.centerY, 'white', 30, 'GameSelectorMenu');
+            //this.createButton('MAIN MENU',  this.cameras.main.centerX - 30, this.cameras.main.centerY, 'white', 30, 'GameSelectorMenu');
             
             // -----------------------------------
         }
@@ -312,7 +337,7 @@ export default class Game1 extends Phaser.Scene {
             if(this.gameTime > 0) {
                 // crea texto nuevo
                 this.timerText = this.add.text(20, 20, this.gameTime,
-                    { fontFamily: 'EagleLake', fontSize: 15, color: 'White' }).setOrigin(0.5, 0.5);
+                    { fontFamily: 'yatra', fontSize: 15, color: 'White' }).setOrigin(0.5, 0.5);
             }
         };
 
@@ -433,7 +458,7 @@ export default class Game1 extends Phaser.Scene {
            y,
             text,
             {
-                fontFamily: 'arabic',
+                fontFamily: 'yatra',
                 fontSize: fontsize,
                 color: textColor
             }
@@ -452,7 +477,6 @@ export default class Game1 extends Phaser.Scene {
         button.setInteractive();
         button.on("pointerdown", () => { // Al hacer clic...
             this.scene.start(sceneName);
-            this.sound.stopAll();
 
         });
     }

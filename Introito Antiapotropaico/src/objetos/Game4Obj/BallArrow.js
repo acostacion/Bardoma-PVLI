@@ -3,7 +3,7 @@ import Arrow from '../Game4Obj/Arrow.js';
 export default class BallArrow extends Arrow {
     constructor(scene, x, y) {
         super(scene, x, y, 'arrow3');
-        this.type = 'ball';  // Tipo de flecha
+        this.type = 'ball';  
     }
 
     transformToBall() {
@@ -28,10 +28,10 @@ export default class BallArrow extends Arrow {
         velX = Math.cos(angleToGround) * Math.abs(velX);  
 
      
-        this.arrowBall = this.scene.add.circle(posX, posY, 100, 0xFFD700);
+        this.arrowBall = this.scene.add.circle(posX, posY, 100, 0x740101);
         this.scene.physics.world.enable(this.arrowBall);
-        this.arrowBall.setFillStyle(0xFF4500);  
-        this.arrowBall.setSize(100, 100);  
+        //this.arrowBall.setFillStyle(0x740101);  
+        this.arrowBall.setSize(80, 80);  
         this.arrowBall.body.setCircle(100);  
 
         this.arrowBall.body.setBounce(0);  
