@@ -19,6 +19,10 @@ export default class Penguin extends Phaser.GameObjects.Sprite {
 		this.aKey = this.scene.input.keyboard.addKey('A');
 		this.dKey = this.scene.input.keyboard.addKey('D');
 		this.spaceKey = this.scene.input.keyboard.addKey('SPACE'); // coger bola
+        this.pressSpace = false;
+
+        // tiene bola
+        this.hasBall = false;
     }
 
     create() {
@@ -50,6 +54,15 @@ export default class Penguin extends Phaser.GameObjects.Sprite {
 			}*/
 			this.body.setVelocityX(0);
 		}
+
+        // Space -> true la flag
+        if(this.spaceKey.isDown) {
+            this.pressSpace = true;
+        }
+        // dejar Space -> false la flag
+        if(Phaser.Input.Keyboard.JustUp(this.spaceKey)){
+            this.pressSpace = false;
+        }
     }
 
     update() {

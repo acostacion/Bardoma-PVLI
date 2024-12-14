@@ -16,12 +16,22 @@ export default class Ball extends Phaser.GameObjects.Sprite {
 
     }
 
-    preUpdate(time, deltaTime) {
-        super.preUpdate(time, deltaTime);
-        
-    }
-
-    update(){
-        
+    preUpdate() {
+        if(this.y <= 165) 
+        {
+            this.body.setVelocity(0);
+            this.y = 165;
+            //this.body.enable = false;
+        }
+        else if(this.y >= 450)
+        {
+            this.body.setVelocity(0);
+            this.y = 450;
+            //this.body.enable = false;
+        }
+        else
+        {
+            //this.body.enable = true;
+        }
     }
 }

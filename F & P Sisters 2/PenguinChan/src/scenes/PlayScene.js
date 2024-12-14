@@ -55,6 +55,18 @@ export default class PlayScene extends Phaser.Scene {
         
         // Rata
         this.rat = new Rat(this, 233, 156, gameMode).setOrigin(0.5, 0);
+
+        // Paredes
+        // -- Izq
+        this.paredIzq = this.physics.add.sprite(116, 315, null);
+        this.paredIzq.body.setAllowGravity(false).setSize(10, 270); // Width / Height
+        this.paredIzq.visible = false;
+        this.paredIzq.body.setImmovable(true);
+        // -- Der
+        this.paredDer = this.physics.add.sprite(350, 315, null);
+        this.paredDer.body.setAllowGravity(false).setSize(10, 270); // Width / Height
+        this.paredDer.visible = false;
+        this.paredDer.body.setImmovable(true);
         
         // -- Tiempo
         // tiempo de juego inicial
@@ -65,6 +77,8 @@ export default class PlayScene extends Phaser.Scene {
         { fontFamily: 'babelgam', fontSize: 30, color: 'White' }).setOrigin(0);
         
         this.timerHUD();
+
+        this.checkCollisions();
     }
     
     timerHUD() {
@@ -86,6 +100,52 @@ export default class PlayScene extends Phaser.Scene {
             loop: true,
             callback: updateTimer,
             callbackScope: this
+        });
+    }
+
+    update() {
+        if(this.penguin.hasBall && this.penguin.pressSpace) {
+            console.log("lanzar");
+        }
+    }
+
+    checkCollisions() {
+        this.physics.add.collider(this.penguin, this.paredDer);
+        this.physics.add.collider(this.penguin, this.paredIzq);
+        this.physics.add.collider(this.ballPool, this.ballPool);
+        this.physics.add.collider(this.ballPool, this.paredDer);
+        this.physics.add.collider(this.ballPool, this.paredIzq);
+
+        // golpe al penguin
+        this.ballPool.forEach(obj => {
+            this.physics.add.overlap(this.penguin, obj, () => {
+                // recoger bolas
+                if((obj.y >= 450) && (obj.body.velocity.y == 0) && this.penguin.pressSpace && !this.penguin.hasBall) 
+                {
+                    console.log("coger bola");
+                    obj.destroy();
+                    this.penguin.hasBall = true;
+                }
+                // si tiene fuerza hacia abj -> hace daño al pinguino
+                /*
+                if()
+                {
+                    
+                }
+                */
+            });
+        });
+
+        // golpe al rat
+        this.ballPool.forEach(obj => {
+            this.physics.add.collider(this.rat, obj, () => {
+                /*
+                if() // si tiene fuerza hacia arr -> hace daño al pinguino
+                {
+                    
+                }
+                */
+            });
         });
     }
 }
