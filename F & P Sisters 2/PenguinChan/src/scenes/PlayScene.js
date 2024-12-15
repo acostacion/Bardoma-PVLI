@@ -40,10 +40,22 @@ export default class PlayScene extends Phaser.Scene {
         this.paredIzq = this.physics.add.sprite(116, 315, null);
         this.paredIzq.body.setAllowGravity(false).setSize(10, 270); // Width / Height
         this.paredIzq.visible = false;
+        this.paredIzq.setImmovable(true);
         // -- Der
         this.paredDer = this.physics.add.sprite(350, 315, null);
         this.paredDer.body.setAllowGravity(false).setSize(10, 270); // Width / Height
         this.paredDer.visible = false;
+        this.paredDer.setImmovable(true);
+        // -- Abj
+        this.paredAbj = this.physics.add.sprite(350, 315, null);
+        this.paredAbj.body.setAllowGravity(false).setSize(10, 270); // Width / Height
+        this.paredAbj.visible = false;
+        this.paredAbj.setImmovable(true);
+        // -- Arr
+        this.paredArr = this.physics.add.sprite(115, 315, null);
+        this.paredArr.body.setAllowGravity(false).setSize(10, 270); // Width / Height
+        this.paredArr.visible = false;
+        this.paredArr.setImmovable(true);
 
         let ratBalls = 5;
         let penguinBalls = 5;
@@ -51,12 +63,12 @@ export default class PlayScene extends Phaser.Scene {
 
         for(let i = 0; i < ratBalls; i++){
             
-            let ball = new Ball(this, 140+(47*i), 165).setOrigin(0.5, 0);
+            let ball = new Ball(this, 130+(47*i), 165).setOrigin(0.5, 0);
             this.ballArray.push(ball);
         }
         for(let i = 0; i < penguinBalls; i++)
         {
-            let ball = new Ball(this, 140+(47*i), 450).setOrigin(0.5, 0);
+            let ball = new Ball(this, 150+(47*i), 450).setOrigin(0.5, 0);
             this.ballArray.push(ball);
         }
         
@@ -104,16 +116,28 @@ export default class PlayScene extends Phaser.Scene {
 
                 if((obj.y >= 450)&&(obj.body.velocity.y == 0) && !this.penguin.isBallPicked && this.penguin.pressedSpace){
                     console.log('hapillao')
-                    this.penguin.isBallPicked = true;
-                    //obj.setPosition(this.penguin.x, this, this.penguin.y);
-                    //let angle = Phaser.Math.Angle(0);
-                    this.physics.velocityFromRotation(angle, 100, obj); 
+                    //this.penguin.isBallPicked = true;
+                    obj.body.setImmovable(false);
+                    obj.setVelocity(0, -100);
                 }
             });
 
-            this.physics.add.overlap(this.penguin, obj, ()=>{
+            this.time.addEvent({
+                delay: 1000, 
+                loop: true,
+                callback: () => 
+                {
+                    this.physics.add.overlap(this.rat, obj, ()=>{
+                
+                        obj.body.setImmovable(false);
+                        obj.setVelocity(0, 100);
 
-            });
-        })
+                        if(obj.body.velocity.y > 0){
+                            console.log("hostia a rata.");
+                        }
+                    });
+                }
+            });    
+        });
     }
 }
