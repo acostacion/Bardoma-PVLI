@@ -3,3 +3,5 @@
 3. Meterle el jsconfig.json al examen tb.
 
 Con esto ya debería ir.
+
+ npx http-server

@@ -1,61 +1,60 @@
 export default class Title extends Phaser.Scene {
 	constructor() {
-		super({ key: 'title'});
+		super({ key: 'Title'});
 	}
 
 	create() {
-        // title
         this.title = this.add.text(
             this.cameras.main.centerX,
-            this.cameras.main.centerY -70,
+            this.cameras.main.centerY - 60,
             'TwinBee',
             {
                 fontFamily: 'gummy',
-                fontSize: 40,
-    
-                color: 'white',
-                stroke: '#f5538c',   
-                strokeThickness: 5,
-            }
-        ).setOrigin(0.5);
+                fontSize: 30,
 
-        // 1P
+                color: 'white',
+                stroke: 'pink',   
+                strokeThickness: 5
+            }
+        ).setOrigin(0.5, 0.5);
+
         this.P1 = this.add.text(
             this.cameras.main.centerX,
-            this.cameras.main.centerY +40,
+            this.cameras.main.centerY,
             '1 player',
             {
                 fontFamily: 'gummy',
                 fontSize: 20,
-    
-                color: '#3030ff',
-                stroke: '#c49b2f',   
-                strokeThickness: 5,
-            }
-        ).setOrigin(0.5).setInteractive();
 
-        // 2P
+                color: 'blue',
+                stroke: 'yellow',   
+                strokeThickness: 5
+            }
+        ).setOrigin(0.5, 0.5).setInteractive();
+
         this.P2 = this.add.text(
             this.cameras.main.centerX,
-            this.cameras.main.centerY +80,
-            '2 players',
+            this.cameras.main.centerY +50,
+            '2 player',
             {
                 fontFamily: 'gummy',
                 fontSize: 20,
-    
-                color: '#ff3030',
-                stroke: '#3030ff',   
+
+                color: 'pink',
+                stroke: 'blue',   
                 strokeThickness: 5
             }
-        ).setOrigin(0.5).setInteractive();
+        ).setOrigin(0.5, 0.5).setInteractive();
 
-        P1.on("pointerdown", () => { // Al hacer clic...
-            this.scene.start("level");
-        });
+        let mode;
+        this.P1.on("pointerdown", () => { // Al hacer clic...
+            mode = 0;
+            this.scene.start("Level", {mode: mode});
+        });  
 
-        P2.on("pointerdown", () => { // Al hacer clic...
-            this.scene.start("level");
-        });
-        
+        this.P2.on("pointerdown", () => { // Al hacer clic...
+            mode = 1;
+            this.scene.start("Level", {mode: mode});
+        });  
     }
   }

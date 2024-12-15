@@ -1,6 +1,6 @@
 import Level from './scenes/level.js';
 import Title from './scenes/title.js';
-import Boot from './scenes/boot.js';
+import Boot from './scenes/boot.js'
 
 let config = {
     type: Phaser.AUTO,
