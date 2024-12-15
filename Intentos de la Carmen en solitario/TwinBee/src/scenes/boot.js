@@ -56,6 +56,14 @@ export default class Boot extends Phaser.Scene {
             repeat: -1
         });
 
+        // shoot
+        this.anims.create({
+            key: 'shootT',
+            frames: this.anims.generateFrameNumbers('twinbee', {start:3, end:3}),
+            frameRate: 5,
+            repeat: -1
+        });
+
         // ------ WINBEE
         // idle
         this.anims.create({
@@ -77,6 +85,14 @@ export default class Boot extends Phaser.Scene {
         this.anims.create({
             key: 'derW',
             frames: this.anims.generateFrameNumbers('winbee', {start:2, end:2}),
+            frameRate: 5,
+            repeat: -1
+        });
+
+        // shoot
+        this.anims.create({
+            key: 'shootW',
+            frames: this.anims.generateFrameNumbers('winbee', {start:3, end:3}),
             frameRate: 5,
             repeat: -1
         });

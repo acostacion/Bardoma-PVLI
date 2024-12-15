@@ -25,6 +25,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite{
             this.idleAnim = 'idleT';
             this.leftAnim = 'izqT';
             this.rightAnim = 'derT';
+            this.shootAnim = 'shootT';
             this.cursors = scene.input.keyboard.addKeys({
                 up: Phaser.Input.Keyboard.KeyCodes.W,
                 right: Phaser.Input.Keyboard.KeyCodes.D,
@@ -38,6 +39,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite{
             this.idleAnim = 'idleW';
             this.leftAnim = 'izqW';
             this.rightAnim = 'derW';
+            this.shootAnim = 'shootW';
             this.cursors = scene.input.keyboard.addKeys({
                 up: Phaser.Input.Keyboard.KeyCodes.UP,
                 right: Phaser.Input.Keyboard.KeyCodes.RIGHT,
@@ -48,6 +50,8 @@ export default class Player extends Phaser.Physics.Arcade.Sprite{
             });
         }
 
+        this.speed = 100;
+
         this.play(this.idleAnim);
         
     }
@@ -55,36 +59,48 @@ export default class Player extends Phaser.Physics.Arcade.Sprite{
     preUpdate(time, deltaTime){
         super.preUpdate(time, deltaTime); // llama al preupdate para ejecutar la animacion
 
-        // antes de empezar el movimiento velocity 0.
-        this.body.setVelocity(0);
-
+        // -- LEFT.
         if(this.cursors.left.isDown){
-            this.body.setVelocityX(-100);
+            this.body.setVelocityX(-this.speed);
             this.play(this.leftAnim);
         }
+        // -- RIGHT.
         if(this.cursors.right.isDown){
-            this.body.setVelocityX(100);
+            this.body.setVelocityX(this.speed);
             this.play(this.rightAnim);
         }
+
+        // -- LEFT RIGHT JUSTUP.
+        if(Phaser.Input.Keyboard.JustUp(this.cursors.left) || Phaser.Input.Keyboard.JustUp(this.cursors.right)) 
+        {
+            this.body.setVelocityX(0);
+            this.play(this.idleAnim);
+        }
+
+        // -- UP.
         if(this.cursors.up.isDown){
-            this.body.setVelocityY(-100);
+            this.body.setVelocityY(-this.speed);
             this.play(this.idleAnim);
         }
+        // -- DOWN.
         if(this.cursors.down.isDown){
-            this.body.setVelocityY(100);
+            this.body.setVelocityY(this.speed);
             this.play(this.idleAnim);
         }
-        else{
-            this.play(this.idleAnim);
+        
+        // -- UP DOWN JUSTUP.
+        if(Phaser.Input.Keyboard.JustUp(this.cursors.up) || Phaser.Input.Keyboard.JustUp(this.cursors.down)) 
+        {
+            this.body.setVelocityY(0);
         }
+
+        if(this.cursors.shoot.isDown){ // si apretas el shoot...
+
+        }
+        
     }
 
-    create(){ 
-        
-        
-    }
+    shoot(){
 
-    update(){
-         
     }
 }
