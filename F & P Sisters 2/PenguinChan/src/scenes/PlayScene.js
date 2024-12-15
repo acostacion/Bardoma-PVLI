@@ -8,6 +8,8 @@ let gameMode;
 export default class PlayScene extends Phaser.Scene {
 	constructor() {
 		super({ key: 'PlayScene'});
+
+        
 	}
 
     init(data) {
@@ -44,7 +46,7 @@ export default class PlayScene extends Phaser.Scene {
         
         for(var i = 0; i < ratBalls; i++)
         {
-            let ball = new Ball(this, 140+(47*i), 165).setOrigin(0.5, 0);
+            let ball = new Ball(this, 140+(37*i), 165).setOrigin(0.5, 0);
             this.ballPool.push(ball);
         }
         for(var i = 0; i < penguinBalls; i++)
@@ -105,6 +107,7 @@ export default class PlayScene extends Phaser.Scene {
 
     update() {
         if(this.penguin.hasBall && this.penguin.pressSpace) {
+            this.penguin.hasBall = false;
             console.log("lanzar");
         }
     }
@@ -112,40 +115,58 @@ export default class PlayScene extends Phaser.Scene {
     checkCollisions() {
         this.physics.add.collider(this.penguin, this.paredDer);
         this.physics.add.collider(this.penguin, this.paredIzq);
-        this.physics.add.collider(this.ballPool, this.ballPool);
         this.physics.add.collider(this.ballPool, this.paredDer);
         this.physics.add.collider(this.ballPool, this.paredIzq);
-
+        
         // golpe al penguin
         this.ballPool.forEach(obj => {
             this.physics.add.overlap(this.penguin, obj, () => {
                 // recoger bolas
                 if((obj.y >= 450) && (obj.body.velocity.y == 0) && this.penguin.pressSpace && !this.penguin.hasBall) 
-                {
+                    {
                     console.log("coger bola");
-                    obj.destroy();
+                    //obj.destroy();
                     this.penguin.hasBall = true;
+                    obj.setVelocity(0,-50);
                 }
                 // si tiene fuerza hacia abj -> hace daño al pinguino
                 /*
                 if()
                 {
-                    
+                
                 }
                 */
             });
+        });
+        
+        
+        // golpe al rat
+        this.ballPool.forEach(obj => 
+        {
+            this.time.addEvent
+            ({
+                delay: 5000,
+                loop: true,
+                callback: () =>
+                {
+                    this.physics.add.overlap(this.rat, obj, () => 
+                    {
+                        if(obj.body.velocity.y < 0)
+                        {
+                            this.rat.stun = true;
+                            console.log("au");
+                        }
+                        if(!this.rat.hasBall)
+                        {
+                            obj.setVelocity(0,50);
+                        }
+                    });
+                }
+            });
+            
         });
 
-        // golpe al rat
-        this.ballPool.forEach(obj => {
-            this.physics.add.collider(this.rat, obj, () => {
-                /*
-                if() // si tiene fuerza hacia arr -> hace daño al pinguino
-                {
-                    
-                }
-                */
-            });
-        });
+        this.physics.add.collider(this.ballPool, this.ballPool);
+
     }
 }

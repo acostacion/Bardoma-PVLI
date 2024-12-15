@@ -22,10 +22,12 @@ export default class Rat extends Phaser.GameObjects.Sprite {
 		this.downKey = this.scene.input.keyboard.addKey('SPACE'); // atacar
 
         if(this.gameMode == 0) { this.body.setVelocityX(-this.speed); }
-    }
 
-    create() {
+        // tiene bola
+        this.hasBall = false;
 
+        // le acaban de golpear
+        this.stun = false;
     }
 
     preUpdate(time, deltaTime) {
@@ -33,16 +35,42 @@ export default class Rat extends Phaser.GameObjects.Sprite {
         
         // 1P
         if(this.gameMode == 0) {
+
+            if(this.stun) {
+                this.body.setVelocityX(0);
+                this.scene.time.addEvent
+                ({
+                    delay: 5000,
+                    loop: false,
+                    callback: () =>
+                    {
+                        this.stun = false;
+                        this.body.setVelocityX(-this.speed);
+
+                        if(((this.body.velocity.x == -this.speed) && (this.x - this.width) < 115)) 
+                        {
+                            this.body.setVelocityX(this.speed);
+                        }
+                    }
+                });
+            }
+            else
+            {
+                console.log(this.stun);
+                if(((this.body.velocity.x == -this.speed) && (this.x - this.width) < 115))
+                {
+                    this.body.setVelocityX(this.speed);
+                }
+                // si esta yendo hacia la der
+                if(((this.body.velocity.x == this.speed) && (this.x + this.width) > 352))
+                {
+                    this.body.setVelocityX(-this.speed);
+                }
+            }
+
             // si esta yendo hacia la izq
-            if((this.body.velocity.x == -this.speed) && (this.x - this.width) < 115)
-            {
-                this.body.setVelocityX(this.speed);
-            }
-            // si esta yendo hacia la der
-            if((this.body.velocity.x == this.speed) && (this.x + this.width) > 352)
-            {
-                this.body.setVelocityX(-this.speed);
-            }
+            
+
         }
         // VS
         else {
