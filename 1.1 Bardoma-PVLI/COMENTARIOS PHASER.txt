@@ -1,0 +1,7 @@
+1. Poner el Phaser.js de introito en tu examen. 
+2. Mover la carpeta types con los dos archivos (matter y phaser)
+3. Meterle el jsconfig.json al examen tb.
+
+Con esto ya debería ir.
+
+ npx http-server
